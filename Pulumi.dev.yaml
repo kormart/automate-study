@@ -1,0 +1,4 @@
+encryptionsalt: v1:PDXKXWgLgXw=:v1:P2gysTKXtSdEITde:kOQDxH+MmHCrfD4krWkWovUiD/JeuQ==
+config:
+  azure-native:location: westeurope
+  azure:location: northeurope
