@@ -1,3 +1,5 @@
 #!/bin/bash
 
-touch test.txt
+#touch /home/azureuser/test.txt
+sudo apt update
+sudo apt install -y jq

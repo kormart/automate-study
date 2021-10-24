@@ -12,8 +12,9 @@ import pulumi_azure_native.resources as resources
 #password = config.require("password")
 
 # Create a new resource group for this VM
-resource_group_name_base="rise-ai-center-northeurope"
-resource_group = resources.ResourceGroup(resource_group_name_base)
+resource_group_name_base="rise-ai-center"
+resource_group_location="westeurope"
+resource_group = resources.ResourceGroup(resource_group_name_base, location=resource_group_location)
 
 net = network.VirtualNetwork(
     "masterops-network",
@@ -89,6 +90,20 @@ vm = compute.VirtualMachine(
             version="latest",
         ),
     ))
+extension = compute.VirtualMachineExtension("master-extension",
+    vm_name=vm.id,
+    resource_group_name=resource_group.name,
+    publisher="Microsoft.Azure.Extensions",
+    type="CustomScript",
+    type_handler_version="2.1",
+    settings=""" {
+	} """,
+    protected_settings=""" {
+        commandToExecute: 'sh test_custom_script.sh',
+        fileUris: ["https://riseaicenter9576892428.blob.core.windows.net/azureml-blobstore-a3577153-b708-4da7-ba96-d3d8997a0cac/test_custom_script.sh?sp=r&se=2021-10-25T03:09:07Z&sv=2020-08-04&sr=b&sig=MCDiN2qkqyyIVgP%2FYro%2FM9doe2Aevu%2B0Oyd2DAHjohY%3D"]
+    }  """)
+
+# "https://riseaicenter9576892428.blob.core.windows.net/azureml-blobstore-a3577153-b708-4da7-ba96-d3d8997a0cac/test_custom_script.sh?sp=r&se=2021-10-25T03:09:07Z&sv=2020-08-04&sr=b&sig=MCDiN2qkqyyIVgP%2FYro%2FM9doe2Aevu%2B0Oyd2DAHjohY%3D"
 
 # Assign Key Operations rights to the VM for the Storage Account 
 sub="d818cbed-274b-4240-9872-8761fe9e488c"

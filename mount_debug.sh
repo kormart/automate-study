@@ -32,4 +32,4 @@ echo $smbPath $mntPath $fileHost
 sudo mkdir -p $mntPath
 
 sudo mount -t cifs $smbPath $mntPath -o username=$storageAccountName,password=$storageAccountKey,serverino,gid=1000,uid=1000
-ln -s $mntPath persistent-files
+ln -s $mntPath /home/azureuser/persistent-files
