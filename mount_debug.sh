@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo apt update
+sudo apt install -y jq
+
 # mounts an Azure File Share to a VM
 # uses the json parser jq
 # assumes that this VM has the right role assigned
