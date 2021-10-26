@@ -4,12 +4,12 @@ The purpose is to provide a high-capacity GPU machine in a dynamic way, meaning 
  
 Currently, the GPU machine is specified to be the Azure compute machine: `Standard_ND40rs_v2`.
  
-There is a (non-GPU) VM, called `masterops`, in Azure from where we can start and stop the GPU machine.
+There is a (non-GPU) VM, called `masterops`, on Azure, from where we can start and stop the GPU machine.
 To login to `masterops` you have to have provided your public key separately.
 
     ssh -i <your key file> azureuser@<ip adress of masterops>
 
-In the `masterops` machine, a shared file system is available in the folder `persistent-files` (copmlete path: `/home/azureuser/persistent-files`)
+In the `masterops` machine, a shared file system is available in the folder `persistent-files` (complete path: `/home/azureuser/persistent-files`)
 
     cd ~/persistent-files
  
