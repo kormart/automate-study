@@ -30,8 +30,9 @@ The shared file system is now available on the GPU machine as well
 
     cd ~/persistent-files
  
-To find the IP adress of a GPU machine that is already. running, run this in the `azure-gpu-ops` folder on the `masterops` machine
-pulumi stack output
+To find the IP adress of a GPU machine that is already. running, run this command in the `azure-gpu-ops` folder on the `masterops` machine:
+
+    pulumi stack output
 
 To stop (and destroy) the GPU machine, go to the `masterops` machine again
 
