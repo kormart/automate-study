@@ -81,7 +81,7 @@ vm = compute.VirtualMachine(
         ],
     ),
     hardware_profile=compute.HardwareProfileArgs(
-        vm_size="Standard_ND40rs_v2",
+        vm_size="Standard_NC6s_v3",
     ),
     os_profile=compute.OSProfileArgs(
         admin_username="azureuser",
