@@ -18,9 +18,9 @@ accessToken=$(curl -s 'http://169.254.169.254/metadata/identity/oauth2/token?api
 storageAccountKey=$(curl -s https://management.azure.com/subscriptions/$sub/resourceGroups/$resourceGroupName/providers/Microsoft.Storage/storageAccounts/$storageAccountName/listKeys?api-version=2016-12-01 --request POST -d "" -H "Authorization: Bearer $accessToken" | jq -r .keys[0].value)
 
 fileStoreEndpoint=https://riseaicenter9576892428.file.core.windows.net/
+httpEndpoint=$fileStoreEndpoint
 
 # diagnostics
-# httpEndpoint=$fileStoreEndpoint
 # smbPath=$(echo $httpEndpoint | cut -c7-$(expr length $httpEndpoint))
 # fileHost=$(echo $smbPath | tr -d "/")
 # nc -zvw3 $fileHost 445
