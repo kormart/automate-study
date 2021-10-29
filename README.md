@@ -46,9 +46,9 @@ To stop (and destroy) the GPU machine, go to the `masterops` machine again
 
 ## How-to for infra engineer
 
-The setup is using Pulumi, `pulumi.com` for automation, Infrastructure-as-Code.
+The setup is using Pulumi, `pulumi.com` for automation (Infrastructure-as-Code).
 
-On the `masterops` machine, install Pulumi
+On the `masterops` machine (or anywhere you want to run the automation from), install Pulumi
 
     curl -fsSL https://get.pulumi.com | sh
     
