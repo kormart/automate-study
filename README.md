@@ -3,9 +3,10 @@
 The purpose is to provide a high-capacity GPU machine in a dynamic way, meaning it can be started and stopped easily, and files can be stored in a persistent file system (which remains when the GPU machine is destroyed).
  
 Currently, the GPU machine is the Azure VM `Standard_ND40rs_v2`.
-The next section is a howto for users, below comes howto for setting it up.
 
-## Howto for users
+The next section is a how-to for users, below comes how-to for setting it up.
+
+## How-to for users
 
 There is a (non-GPU) VM, called `masterops`, on Azure, from where we can start and stop the GPU machine.
 To login to `masterops` you have to have provided your public key separately.
@@ -43,7 +44,7 @@ To stop (and destroy) the GPU machine, go to the `masterops` machine again
     pulumi destroy
     
 
-## Howto for infra engineer
+## How-to for infra engineer
 
 The setup is using Pulumi, `pulumi.com` for automation, Infrastructure-as-Code.
 
