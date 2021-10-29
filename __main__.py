@@ -1,4 +1,4 @@
-# This is the masterops machine on Azure
+# This is brings up a GPU machine on Azure, with Role to access File Share
 
 import base64
 from pulumi import Config, Output, export
@@ -7,10 +7,12 @@ import pulumi_azure_native.compute as compute
 import pulumi_azure_native.network as network
 import pulumi_azure_native.resources as resources
 
+# We are not using passwords, we are using key-pairs, configured later below
 #config = Config()
 #username = config.require("username")
 #password = config.require("password")
 
+# Basic information about the Azure account
 sub="d818cbed-274b-4240-9872-8761fe9e488c"
 storageAccountName="riseaicenter9576892428"
 resource_group_name_storage="rise-ai-center"
@@ -20,6 +22,7 @@ resource_group_name_base="rise-ai-center"
 resource_group_location="westeurope"
 resource_group = resources.ResourceGroup(resource_group_name_base, location=resource_group_location)
 
+# Create resources for the VM
 net = network.VirtualNetwork(
     "gpu-network",
     resource_group_name=resource_group.name,
@@ -46,31 +49,12 @@ network_iface = network.NetworkInterface(
         public_ip_address=network.PublicIPAddressArgs(id=public_ip.id),
     )])
 
-# publisher="Canonical"
-# offer="UbuntuServer"
-# sku="18.04-LTS"
-# version="latest"
-
-# disk = compute.Disk("gpuOSDisk",
-#     creation_data=azure_native.compute.CreationDataArgs(
-#         create_option="FromImage",
-#         image_reference=azure_native.compute.ImageDiskReferenceArgs(
-#             id="/Subscriptions/"+sub+"/Providers/Microsoft.Compute/Locations/westeurope/Publishers/"+publisher+"/ArtifactTypes/VMImage/Offers/"+offer+"/Skus/"+sku+"/Versions/latest"
-#         ),
-#     ),
-#     disk_name="gpuOSDisk",
-#     location="westeurope",
-#     os_type="Linux",
-#     hyper_v_generation="V2",
-#     resource_group_name=resource_group.name
-#     )
-
 init_script = """
 #!/bin/bash
 touch test.txt
 
 """
-# need to add identity part to trigger creation of MSI
+# added the identity= part to trigger the creation of MSI (Managed System Identity) which is used in the Role Assignment
 vm = compute.VirtualMachine(
     "gpu",
     identity=compute.VirtualMachineIdentityArgs(type="SystemAssigned") ,
@@ -81,7 +65,7 @@ vm = compute.VirtualMachine(
         ],
     ),
     hardware_profile=compute.HardwareProfileArgs(
-        vm_size="Standard_NC6s_v3",
+        vm_size="Standard_ND40rs_v2",
     ),
     os_profile=compute.OSProfileArgs(
         admin_username="azureuser",
@@ -115,19 +99,6 @@ vm = compute.VirtualMachine(
     )
 )
 
-    # storage_profile=compute.StorageProfileArgs(
-    #     os_disk=compute.OSDiskArgs(
-    #         create_option=compute.DiskCreateOptionTypes.FROM_IMAGE,
-    #         name="masteropsOSDisk",
-    #     ),
-    #     image_reference=compute.ImageReferenceArgs(
-    #         publisher="canonical",
-    #         offer="UbuntuServer",
-    #         sku="18.04-LTS",
-    #         version="latest",
-    #     ),
-    # )
-
 # Assign Key Operations rights to the VM for the Storage Account 
 
 # Pulumi has special constructs for Input and Output to handle asynchronous behavior
@@ -144,7 +115,7 @@ role_assignment = azure_native.authorization.RoleAssignment("roleAssignment",
     role_definition_id=role_definition_id,
     scope=scope)
 
-# what is this, a list
+# get the resulting resource identities (such as VM public IP address) using the Pulumi Output construct
 combined_output = Output.all(vm.id, public_ip.name, resource_group.name)
 public_ip_addr = combined_output.apply(
     lambda lst: network.get_public_ip_address(
