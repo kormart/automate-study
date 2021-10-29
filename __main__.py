@@ -1,4 +1,4 @@
-# This is brings up a GPU machine on Azure, with Role to access File Share
+# This brings up a GPU machine on Azure, with Role to access File Share
 
 import base64
 from pulumi import Config, Output, export
