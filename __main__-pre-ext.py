@@ -115,32 +115,6 @@ role_assignment = azure_native.authorization.RoleAssignment("roleAssignment",
     role_definition_id=role_definition_id,
     scope=scope)
 
-vm_extension_1 = compute.VirtualMachineExtension(
-    "nvidia-drivers",
-    auto_upgrade_minor_version=True,
-    location="westeurope",
-    publisher="Microsoft.HpcCompute",
-    resource_group_name=resource_group.name,
-    type="NvidiaGpuDriverLinux",
-    type_handler_version="1.2",
-    vm_extension_name="NvidiaGpuDriverLinux",
-    vm_name=vm.name,
-    # opts=pulumi.ResourceOptions(protect=True)
-)
-
-# vm_extension_2 = compute.VirtualMachineExtension(
-#     "custom-script-mount-fileshare",
-#     location="westeurope",
-#     resource_group_name=resource_group.name,
-#     vm_name=vm.name,
-#     type="CustomScriptExtension",
-#     type_handler_version="1.10",
-#     publisher="Microsoft.Compute",
-#     # vm_extension_name="NvidiaGpuDriverLinux",
-#     fileUris=["https://riseaicenter9576892428.blob.core.windows.net/azureml-blobstore-a3577153-b708-4da7-ba96-d3d8997a0cac/mount_fileshare.sh"],
-#     commandToExecute="sh mount_fileshare.sh"
-# )
-
 # get the resulting resource identities (such as VM public IP address) using the Pulumi Output construct
 combined_output = Output.all(vm.id, public_ip.name, resource_group.name)
 public_ip_addr = combined_output.apply(
